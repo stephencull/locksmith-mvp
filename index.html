@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Locksmith Assistant</title>
   <style>
-    /* Simple, mobile-first styling */
     body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f7f7f9;margin:0;padding:0}
     .wrap{max-width:720px;margin:0 auto;padding:24px}
     .card{background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);padding:20px}
@@ -100,8 +99,7 @@
   </div>
 
   <script>
-    // Replace this with your Apps Script Web App URL after you deploy it.
-    // Example: const API_URL = 'https://script.google.com/macros/s/AKfycbx.../exec';
+    // Your Google Apps Script Web App URL
     const API_URL = 'https://script.google.com/macros/s/AKfycby7Xe9BeCSHW56gj5cpxji3sRITwOG_uoCH_CZ5aDzk6nvE3Wtyqx5gtmrIGS97xYwb/exec';
 
     const form = document.getElementById('f');
@@ -110,12 +108,6 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-
-      // Basic guard
-      if (!API_URL || API_URL.includes('https://script.google.com/macros/s/AKfycby7Xe9BeCSHW56gj5cpxji3sRITwOG_uoCH_CZ5aDzk6nvE3Wtyqx5gtmrIGS97xYwb/exec')) {
-        msg.innerHTML = '<span class="err">Setup step needed: paste your Web App URL into index.html</span>';
-        return;
-      }
 
       msg.textContent = 'Sending…';
       sendBtn.disabled = true;
@@ -143,7 +135,7 @@
       };
 
       try {
-        // Use no-cors + text/plain to avoid preflight/CORS issues with Apps Script.
+        // Send as text/plain in no-cors mode to avoid preflight/CORS issues with Apps Script
         await fetch(API_URL, {
           method: 'POST',
           mode: 'no-cors',
@@ -151,7 +143,7 @@
           body: JSON.stringify(payload)
         });
 
-        // We can't read the response in no-cors mode; assume success if no exception.
+        // In no-cors we can't read the response; assume ok if no exception
         msg.innerHTML = '<span class="ok">Thanks! We\'ve got your details and will reply shortly.</span>';
         form.reset();
       } catch (err) {
