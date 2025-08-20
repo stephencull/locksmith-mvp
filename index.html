@@ -1,79 +1,166 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Locksmith Assistant</title>
-<style>
-body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f7f7f9;margin:0;padding:0}
-.wrap{max-width:720px;margin:0 auto;padding:24px}
-.card{background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);padding:20px}
-.h{font-size:1.4rem;margin:0 0 12px}
-label{display:block;margin:12px 0 6px;font-weight:600}
-input,select,textarea{width:100%;padding:12px;border:1px solid #dcdce0;border-radius:10px;font-size:1rem}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.btn{display:inline-block;margin-top:14px;padding:12px 16px;border:0;border-radius:12px;background:#111;color:#fff;font-weight:600;cursor:pointer}
-.muted{color:#666;font-size:.92rem}
-.ok{color:#0a7c35;font-weight:700}
-.err{color:#a40000;font-weight:700}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Locksmith Assistant</title>
+  <style>
+    /* Simple, mobile-first styling */
+    body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f7f7f9;margin:0;padding:0}
+    .wrap{max-width:720px;margin:0 auto;padding:24px}
+    .card{background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);padding:20px}
+    .h{font-size:1.4rem;margin:0 0 12px}
+    label{display:block;margin:12px 0 6px;font-weight:600}
+    input,select,textarea{width:100%;padding:12px;border:1px solid #dcdce0;border-radius:10px;font-size:1rem;background:#fff}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width:640px){ .row{grid-template-columns:1fr} }
+    .btn{display:block;margin-top:14px;padding:12px 16px;border:0;border-radius:12px;background:#111;color:#fff;font-weight:600;cursor:pointer;width:100%}
+    .muted{color:#666;font-size:.92rem}
+    .ok{color:#0a7c35;font-weight:700}
+    .err{color:#a40000;font-weight:700}
+  </style>
 </head>
 <body>
-<div class="wrap">
-<div class="card">
-<h1 class="h">Locked out or lock won’t work?</h1>
-<p>Answer 6 quick questions and upload photos. We’ll confirm a time or give instant advice.</p>
+  <noscript style="display:block;padding:12px;background:#fff3cd;color:#664d03;">
+    This page needs JavaScript enabled to send your details.
+  </noscript>
 
+  <div class="wrap">
+    <div class="card">
+      <h1 class="h">Locked out or lock won’t work?</h1>
+      <p>Answer 6 quick questions and upload photos. We’ll confirm a time or give instant advice.</p>
 
-<form id="f">
-<label>Your name</label>
-<input id="name" name="name" required>
+      <!-- CONTACT/INTAKE FORM -->
+      <form id="f">
+        <label>Your name</label>
+        <input id="name" name="name" required>
 
+        <label>Mobile number</label>
+        <input id="mobile" name="mobile" required>
 
-<label>Mobile number</label>
-<input id="mobile" name="mobile" required>
+        <div class="row">
+          <div>
+            <label>Postcode</label>
+            <input id="postcode" name="postcode" required>
+          </div>
+          <div>
+            <label>Door type</label>
+            <select id="doorType" name="doorType" required>
+              <option value="">Select…</option>
+              <option>uPVC</option>
+              <option>Composite</option>
+              <option>Wood</option>
+              <option>Other/Unsure</option>
+            </select>
+          </div>
+        </div>
 
+        <label>What happened?</label>
+        <select id="problem" name="problem" required>
+          <option value="">Select…</option>
+          <option>Locked out</option>
+          <option>Lost keys</option>
+          <option>Key stuck / won’t turn</option>
+          <option>Handle loose / floppy</option>
+          <option>Door won’t lock</option>
+          <option>Door won’t open</option>
+          <option>Other</option>
+        </select>
 
-<div class="row">
-<div>
-<label>Postcode</label>
-<input id="postcode" name="postcode" required>
-</div>
-<div>
-<label>Door type</label>
-<select id="doorType" name="doorType" required>
-<option value="">Select…</option>
-<option>uPVC</option>
-<option>Composite</option>
-<option>Wood</option>
-<option>Other/Unsure</option>
-</select>
-</div>
-</div>
+        <label>Quick symptoms (can you lift the handle? does the key turn? does the bolt engage?)</label>
+        <textarea id="symptoms" name="symptoms" rows="3" placeholder="e.g., handle lifts but key won’t turn"></textarea>
 
+        <label>Urgency</label>
+        <select id="urgency" name="urgency" required>
+          <option value="">Select…</option>
+          <option>Locked out now</option>
+          <option>Door won’t secure</option>
+          <option>Schedule today</option>
+          <option>Schedule this week</option>
+        </select>
 
-<label>What happened?</label>
-<select id="problem" name="problem" required>
-<option value="">Select…</option>
-<option>Locked out</option>
-<option>Lost keys</option>
-<option>Key stuck / won’t turn</option>
-<option>Handle loose / floppy</option>
-<option>Door won’t lock</option>
-<option>Door won’t open</option>
-<option>Other</option>
-</select>
+        <label>Access notes (pets, alarm, parking)</label>
+        <textarea id="access" name="access" rows="2"></textarea>
 
+        <!-- Photos + Submit -->
+        <label>Photos (3 max: front, close-up, door edge)</label>
+        <input id="photos" name="photos" type="file" accept="image/*" multiple>
 
-<label>Quick symptoms (can you lift the handle? does the key turn? does the bolt engage?)</label>
-<textarea id="symptoms" name="symptoms" rows="3" placeholder="e.g., handle lifts but key won’t turn"></textarea>
+        <button class="btn" type="submit" id="sendBtn">Send</button>
+        <p id="msg" class="muted"></p>
+      </form>
 
+      <hr style="margin:24px 0; border:none; border-top:1px solid #eee;">
+      <p class="muted">
+        Prefer WhatsApp?
+        <a id="wa" href="https://wa.me/447894072678?text=I%20have%20a%20lock%20issue" target="_blank">Tap here to message us</a>
+        or call <a href="tel:+447894072678">+44 7894 072678</a>.
+      </p>
+    </div>
+  </div>
 
-<label>Urgency</label>
-<select id="urgency" name="urgency" required>
-<option value="">Select…</option>
-<option>Locked out now</option>
-<option>Door won’t secure</option>
-<option>Schedule today</option>
-<option>Schedule this week</option>
+  <script>
+    // Replace this with your Apps Script Web App URL after you deploy it.
+    // Example: const API_URL = 'https://script.google.com/macros/s/AKfycbx.../exec';
+    const API_URL = 'PASTE_YOUR_WEB_APP_URL_HERE';
+
+    const form = document.getElementById('f');
+    const msg = document.getElementById('msg');
+    const sendBtn = document.getElementById('sendBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Basic guard
+      if (!API_URL || API_URL.includes('PASTE_YOUR_WEB_APP_URL_HERE')) {
+        msg.innerHTML = '<span class="err">Setup step needed: paste your Web App URL into index.html</span>';
+        return;
+      }
+
+      msg.textContent = 'Sending…';
+      sendBtn.disabled = true;
+
+      // Convert up to 3 photos to base64 data URLs
+      const files = Array.from(document.getElementById('photos').files).slice(0, 3);
+      const photos = await Promise.all(files.map(f => new Promise(res => {
+        const r = new FileReader();
+        r.onload = () => res(r.result);
+        r.readAsDataURL(f);
+      })));
+
+      // Build payload
+      const payload = {
+        source: 'web',
+        name: document.getElementById('name').value.trim(),
+        mobile: document.getElementById('mobile').value.trim(),
+        postcode: document.getElementById('postcode').value.trim(),
+        doorType: document.getElementById('doorType').value,
+        problem: document.getElementById('problem').value,
+        symptoms: document.getElementById('symptoms').value.trim(),
+        urgency: document.getElementById('urgency').value,
+        access: document.getElementById('access').value.trim(),
+        photos
+      };
+
+      try {
+        // Use no-cors + text/plain to avoid preflight/CORS issues with Apps Script.
+        await fetch(API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {'Content-Type': 'text/plain;charset=utf-8'},
+          body: JSON.stringify(payload)
+        });
+
+        // We can't read the response in no-cors mode; assume success if no exception.
+        msg.innerHTML = '<span class="ok">Thanks! We\'ve got your details and will reply shortly.</span>';
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        msg.innerHTML = '<span class="err">Sorry, something went wrong. Please WhatsApp or call us.</span>';
+      } finally {
+        sendBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
 </html>
