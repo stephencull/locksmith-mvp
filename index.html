@@ -1,0 +1,76 @@
+<!doctype html>
+<option value="">Select…</option>
+<option>Locked out now</option>
+<option>Door won’t secure</option>
+<option>Schedule today</option>
+<option>Schedule this week</option>
+</select>
+
+
+<label>Access notes (pets, alarm, parking)</label>
+<textarea id="access" name="access" rows="2"></textarea>
+
+
+<label>Photos (3 max: front, close-up, door edge)</label>
+<input id="photos" name="photos" type="file" accept="image/*" multiple>
+
+
+<button class="btn" type="submit">Send</button>
+<p id="msg" class="muted"></p>
+</form>
+
+
+<hr style="margin:24px 0; border:none; border-top:1px solid #eee;">
+<p class="muted">Prefer WhatsApp? <a id="wa" href="https://wa.me/447894072678?text=I%20have%20a%20lock%20issue" target="_blank">Tap here to message us</a> or call <a href="tel:+447894072678">+44 7894 072678</a>.</p>
+</div>
+</div>
+<script>
+const API_URL = 'PASTE_YOUR_WEB_APP_URL_HERE';
+const form = document.getElementById('f');
+const msg = document.getElementById('msg');
+
+
+form.addEventListener('submit', async (e)=>{
+e.preventDefault();
+msg.textContent = 'Sending…';
+
+
+// Convert up to 3 photos to data URLs (base64)
+const files = Array.from(document.getElementById('photos').files).slice(0,3);
+const photos = await Promise.all(files.map(f => new Promise(res=>{
+const r = new FileReader();
+r.onload = ()=>res(r.result);
+r.readAsDataURL(f);
+})));
+
+
+const payload = {
+source: 'web',
+name: document.getElementById('name').value.trim(),
+mobile: document.getElementById('mobile').value.trim(),
+postcode: document.getElementById('postcode').value.trim(),
+doorType: document.getElementById('doorType').value,
+problem: document.getElementById('problem').value,
+symptoms: document.getElementById('symptoms').value.trim(),
+urgency: document.getElementById('urgency').value,
+access: document.getElementById('access').value.trim(),
+photos
+};
+
+
+try{
+const r = await fetch(API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload)});
+const j = await r.json();
+if(j.ok){
+msg.innerHTML = '<span class="ok">Thanks! We\'ve got your details and will reply shortly.</span>';
+form.reset();
+}else{
+msg.innerHTML = '<span class="err">Sorry, something went wrong. Please WhatsApp or call us.</span>';
+}
+}catch(err){
+msg.innerHTML = '<span class="err">Network error — please WhatsApp or call us.</span>';
+}
+});
+</script>
+</body>
+</html>
